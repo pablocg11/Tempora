@@ -1,9 +1,3 @@
-//
-//  ContentView.swift
-//  Tempora
-//
-//  Created by Pablo Castro on 24/10/24.
-//
 
 import SwiftUI
 
