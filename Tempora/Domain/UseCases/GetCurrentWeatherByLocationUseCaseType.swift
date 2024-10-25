@@ -1,8 +1,6 @@
-//
-//  GetCurrentWeatherByLocationUseCase.swift
-//  Tempora
-//
-//  Created by Pablo Castro on 25/10/24.
-//
 
 import Foundation
+
+protocol GetCurrentWeatherByLocationUseCaseType {
+    func execute(forLat lat: Double, forLon lon: Double) async -> Result<WeatherResponse, DomainError>
+}

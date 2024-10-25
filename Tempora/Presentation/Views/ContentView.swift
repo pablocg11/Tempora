@@ -3,29 +3,15 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var location: String = ""
+    private let weatherView: WeatherView
     
-    var body: some View {
-        NavigationView {
-            VStack {
-                HStack {
-                    TextField("Introduce una localización",
-                              text: $location)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    
-                    Button("Buscar") {
-                        
-                    }
-                }
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            .navigationTitle("Tempora")
-        }
+    init(weatherView: WeatherView) {
+        self.weatherView = weatherView
+    }
+    
+    var body: some View {  
+        weatherView
     }
 }
 
-#Preview {
-    ContentView()
-}
+

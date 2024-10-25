@@ -1,8 +1,14 @@
-//
-//  HTTPRequest.swift
-//  Tempora
-//
-//  Created by Pablo Castro on 25/10/24.
-//
 
 import Foundation
+
+struct HTTPRequest {
+    let baseURL: String
+    let queryParams: [String: Any]?
+    let method: HTTPMethod
+    
+    init(baseURL: String, method: HTTPMethod, queryParams: [String : Any]? = nil) {
+        self.baseURL = baseURL
+        self.queryParams = queryParams
+        self.method = method
+    }
+}

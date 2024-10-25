@@ -1,3 +1,6 @@
+
+import Foundation
+
 struct Sys: Codable {
     let type: Int
     let id: Int

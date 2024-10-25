@@ -1,3 +1,6 @@
+
+import Foundation
+
 struct Rain: Codable {
     let oneHour: Double
 

@@ -1,8 +1,15 @@
-//
-//  GetCurrentWeatherByLocationUseCaseImpl.swift
-//  Tempora
-//
-//  Created by Pablo Castro on 25/10/24.
-//
 
 import Foundation
+
+class GetCurrentWeatherByLocationUseCaseImpl: GetCurrentWeatherByLocationUseCaseType {
+    
+    private let repository: CurrentWeatherRepository
+    
+    init(repository: CurrentWeatherRepository) {
+        self.repository = repository
+    }
+    
+    func execute(forLat lat: Double, forLon lon: Double) async -> Result<WeatherResponse, DomainError> {
+        return await repository.getCurrentWeather(forLat: lat, forLon: lon)
+    }
+}

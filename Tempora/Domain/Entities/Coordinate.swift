@@ -1,8 +1,7 @@
-//
-//  Coordinate.swift
-//  Tempora
-//
-//  Created by Pablo Castro on 25/10/24.
-//
 
 import Foundation
+
+struct Coordinate: Codable {
+    let lon: Double
+    let lat: Double
+}

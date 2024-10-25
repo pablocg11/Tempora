@@ -1,9 +1,3 @@
-//
-//  TemporaApp.swift
-//  Tempora
-//
-//  Created by Pablo Castro on 24/10/24.
-//
 
 import SwiftUI
 
@@ -11,7 +5,7 @@ import SwiftUI
 struct TemporaApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(weatherView: WeatherViewFactory().createView())            
         }
     }
 }

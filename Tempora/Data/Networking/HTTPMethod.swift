@@ -1,8 +1,5 @@
-//
-//  HTTPMethod.swift
-//  Tempora
-//
-//  Created by Pablo Castro on 25/10/24.
-//
-
 import Foundation
+
+enum HTTPMethod {
+    case get, post, delete, put
+}
