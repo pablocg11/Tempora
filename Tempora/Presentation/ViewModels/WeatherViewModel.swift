@@ -26,8 +26,11 @@ class WeatherViewModel: ObservableObject {
     func getLatAndLongFromLocation(location: String, completion: @escaping (Result<(Double, Double), DomainError>) -> Void) {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(location) { placemarks, error in
-            if let error = error {
-                completion(.failure(.generic))
+            if let error = error as? CLError, error.code == .locationUnknown {
+                completion(.failure(.locationNotFound))
+                return
+            } else if error != nil {
+                completion(.failure(.generic)) 
                 return
             }
             
