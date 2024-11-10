@@ -17,7 +17,8 @@ class CurrentWeatherRepository: CurrentWeatherRepositoryProtocol {
         let result = await apiDataSource.getCurrentWeatherByLocation(forLat: lat, forLon: lon)
         
         switch result {
-        case .success(let currentWeather):
+        case .success(let currentWeatherDTO):
+            let currentWeather = WeatherResponse(dto: currentWeatherDTO)
             if currentWeather.isEmpty {
                 return .failure(.emptyResponse)
             }

@@ -10,13 +10,12 @@ class RestAPIDataSource: APICurrentWeatherDataSourceProtocol {
         self.httpClient = httpClient
     }
     
-    func getCurrentWeatherByLocation(forLat lat: Double, forLon lon: Double) async -> Result<WeatherResponse, HTTPClientError> {
+    func getCurrentWeatherByLocation(forLat lat: Double, forLon lon: Double) async -> Result<WeatherResponseDTO, HTTPClientError> {
 
         let parameters = [
             "lat": String(lat),
             "lon": String(lon),
-            "appid": "5eebecb636f9b6fd795bdd2c241a34e4",
-            "units": "metric"
+            "appid": "5eebecb636f9b6fd795bdd2c241a34e4"
         ]
         
         let request = HTTPRequest(baseURL: baseUrl, method: .get, queryParams: parameters)
@@ -25,9 +24,13 @@ class RestAPIDataSource: APICurrentWeatherDataSourceProtocol {
         switch result {
         case .success(let data):
             do {
-                let forecast = try JSONDecoder().decode(WeatherResponse.self, from: data)
-                return .success(forecast)
+                let weatherResponse = try JSONDecoder().decode(WeatherResponseDTO.self, from: data)
+                return .success(weatherResponse)
             } catch {
+                print("Error al decodificar JSON:", error)
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("JSON recibido: \(jsonString)")
+                }
                 return .failure(.parsingError)
             }
             

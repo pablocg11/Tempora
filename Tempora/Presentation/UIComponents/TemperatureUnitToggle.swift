@@ -3,8 +3,8 @@ import SwiftUI
 
 struct TemperatureUnitToggle: View {
     
-    let units = ["ºC", "ºF"]
-    @State private var selectedUnit = "ºC"
+    let units = ["C", "F"]
+    @Binding var selectedUnit: String
     
     var body: some View {
         HStack {
@@ -12,20 +12,18 @@ struct TemperatureUnitToggle: View {
                 Button(action: {
                     selectedUnit = unit
                 }) {
-                    Text(unit)
+                    Text("º\(unit)")
                         .padding(.horizontal)
                         .padding(.vertical, 4)
-                        .background(selectedUnit == unit ? Color.white : Color.gray.opacity(0.1))
-                        .foregroundColor(selectedUnit == unit ? Color.black : Color.black.opacity(0.2))
+                        .background(selectedUnit == unit ? Color.blue : Color.gray.opacity(0.2))
+                        .foregroundColor(selectedUnit == unit ? Color.white : Color.black.opacity(0.5))
                         .cornerRadius(8)
                 }
             }
         }
+        .padding(5)
+        .background(.white.opacity(0.6))
         .cornerRadius(10)
-        .shadow(radius: 1)
     }
 }
 
-#Preview {
-    TemperatureUnitToggle()
-}

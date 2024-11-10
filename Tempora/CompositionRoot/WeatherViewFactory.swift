@@ -4,7 +4,7 @@ import Foundation
 class WeatherViewFactory {
     
     func createView() -> WeatherView {
-        return WeatherView(viewModel: createViewModel())
+        return WeatherView(vm: createViewModel())
     }
     
     private func createViewModel() -> WeatherViewModel {
@@ -15,16 +15,24 @@ class WeatherViewFactory {
     private func createErrorMapper() -> PresentationErrorMapper {
         return PresentationErrorMapper()
     }
-    
+
     private func createGetCurrentWeatherUseCase() -> GetCurrentWeatherByLocationUseCaseImpl {
-        GetCurrentWeatherByLocationUseCaseImpl(repository: getCurrentWeatherRepository())
+        return GetCurrentWeatherByLocationUseCaseImpl(repository: createGetCurrentWeatherRepository())
     }
     
-    private func getCurrentWeatherRepository() -> CurrentWeatherRepository {
-        return CurrentWeatherRepository(apiDataSource: getCurrentWeatherRepositoryApiDataSource())
+    private func createSavedCityUseCaseRepository() -> SavedCitiesRepository {
+        return SavedCitiesRepository(cacheDataSource: createSavedCityCacheDataSource())
     }
     
-    private func getCurrentWeatherRepositoryApiDataSource() -> APICurrentWeatherDataSourceProtocol {
+    private func createGetCurrentWeatherRepository() -> CurrentWeatherRepository {
+        return CurrentWeatherRepository(apiDataSource: createGetCurrentWeatherRepositoryApiDataSource())
+    }
+    
+    private func createSavedCityCacheDataSource() -> PersistenceContainerProtocol {
+        return PersistenceContainer.shared()
+    }
+    
+    private func createGetCurrentWeatherRepositoryApiDataSource() -> APICurrentWeatherDataSourceProtocol {
         return RestAPIDataSource(httpClient: createHTTPClient())
     }
     

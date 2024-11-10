@@ -7,19 +7,28 @@ class WeatherViewModel: ObservableObject {
     private let errorMapper: PresentationErrorMapper
     private let getcurrentWeatherUseCase: GetCurrentWeatherByLocationUseCaseImpl
     
-    @Published var weather: WeatherResponse?
-    @Published var showLoading: Bool = false
-    @Published var errorMessage: String?
-    
-    init(errorMapper: PresentationErrorMapper, getcurrentWeatherUseCase: GetCurrentWeatherByLocationUseCaseImpl) {
+    init(errorMapper: PresentationErrorMapper,
+         getcurrentWeatherUseCase: GetCurrentWeatherByLocationUseCaseImpl) {
         self.errorMapper = errorMapper
         self.getcurrentWeatherUseCase = getcurrentWeatherUseCase
     }
     
-    func handleError(_ error: DomainError?) {
-        Task { @MainActor in
-            showLoading = false
-            errorMessage = errorMapper.map(error: error)
+    @Published var weather: WeatherResponse?
+    @Published var showLoading: Bool = false
+    @Published var errorMessage: String?
+    @Published var selectedUnit: String = "C"
+    
+    func onAppear() {
+        getLatAndLongFromLocation(location: "Madrid") { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let (lat, lon)):
+                self.requestCurrentWeatherFromLocation(forLat: lat, forLon: lon)
+                
+            case .failure(let error):
+                self.handleError(error)
+            }
         }
     }
     
@@ -46,7 +55,7 @@ class WeatherViewModel: ObservableObject {
         }
     }
 
-    func requestCurrentWeather(forLat lat: Double, forLon lon: Double) {
+    func requestCurrentWeatherFromLocation(forLat lat: Double, forLon lon: Double) {
         showLoading = true
         
         Task {
@@ -62,6 +71,13 @@ class WeatherViewModel: ObservableObject {
             case .failure(let error):
                 handleError(error)
             }
+        }
+    }
+    
+    private func handleError(_ error: DomainError?) {
+        Task { @MainActor in
+            showLoading = false
+            errorMessage = errorMapper.map(error: error)
         }
     }
 }

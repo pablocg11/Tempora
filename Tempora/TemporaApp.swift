@@ -5,7 +5,8 @@ import SwiftUI
 struct TemporaApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(weatherView: WeatherViewFactory().createView())            
+            ContentView(weatherView: WeatherViewFactory().createView(),
+                        savedCityWeatherView: SavedCitiesViewFactory().createView())
         }
     }
 }

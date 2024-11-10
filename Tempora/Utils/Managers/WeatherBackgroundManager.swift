@@ -17,13 +17,15 @@ class WeatherBackgroundManager {
             gradientColors = isDay ? [Color.gray.opacity(0.6), Color.blue.opacity(0.4)] : [Color.gray, Color.black.opacity(0.7)]
         case "broken clouds":
             gradientColors = isDay ? [Color.gray, Color.gray.opacity(0.5)] : [Color.gray.opacity(0.8), Color.black]
-        case "shower rain", "rain":
+        case "shower rain", "rain", "moderate rain", "heavy intensity rain":
             gradientColors = isDay ? [Color.blue.opacity(0.7), Color.gray] : [Color.blue.opacity(0.4), Color.black]
         case "thunderstorm":
             gradientColors = isDay ? [Color.purple, Color.blue.opacity(0.5)] : [Color.purple, Color.black.opacity(0.7)]
         case "snow":
             gradientColors = isDay ? [Color.white, Color.blue.opacity(0.6)] : [Color.white.opacity(0.8), Color.black]
         case "mist":
+            gradientColors = isDay ? [Color.gray.opacity(0.4), Color.blue.opacity(0.3)] : [Color.gray, Color.black.opacity(0.5)]
+        case "haze":
             gradientColors = isDay ? [Color.gray.opacity(0.4), Color.blue.opacity(0.3)] : [Color.gray, Color.black.opacity(0.5)]
         default:
             gradientColors = isDay ? [Color.blue, Color.cyan] : [Color.black, Color.gray]
@@ -41,6 +43,6 @@ class WeatherBackgroundManager {
         let hour = Calendar.current.component(.hour, from: currentDate)
         
         let localHour = (hour + timezone / 3600) % 24
-        return localHour >= 6 && localHour < 18
+        return localHour >= 6 && localHour < 20
     }
 }

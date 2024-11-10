@@ -2,48 +2,51 @@
 import SwiftUI
 
 struct SavedCityWeatherRow: View {
-//    @State var cityName: String
-//    @State var weatherResponse: WeatherResponse
-//    private let weatherIconManager = WeatherIconManager()
+    @State var cityName: String
+    var weatherResponse: WeatherResponse
+    private let weatherIconManager = WeatherIconManager()
+    private let backgroundManager = WeatherBackgroundManager()
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                VStack(alignment: .leading){
-                    Text("Madrid")
+        if let weather = weatherResponse.weather.first {
+            VStack(alignment: .leading) {
+                HStack {
+                    VStack(alignment: .leading){
+                        Text(cityName)
+                            .font(.title)
+                        
+                        let hour = Date(timeIntervalSince1970: TimeInterval(weatherResponse.timezone))
+                        Text(CustomHourFormatter.shared.string(from: hour))
+                            .font(.callout)
+                    }
+                    
+                    Spacer()
+                    
+                    Text("\(Int(weatherResponse.main.temp))ºC")
                         .font(.title)
-                    Text("12:30")
-                        .font(.callout)
+                        .fontWeight(.light)
                 }
                 
                 Spacer()
                 
-                Text("25°C")
-                    .font(.title)
-                    .fontWeight(.light)
-            }
-            
-            Spacer()
-
-            HStack {
-                Text("Mayormente nublado")
-                    .font(.callout)
+                HStack {
+                    Text(weather.description)
+                        .font(.callout)
+                    
+                    Spacer()
+                    
+                    Text("Max: \(Int(weatherResponse.main.tempMax))º Min: \(Int(weatherResponse.main.tempMin))º")
+                        .font(.callout)
+                }
                 
-                Spacer()
-                
-                Text("Máx 26º Mín. 15º")
-                    .font(.callout)
             }
-            
+            .padding()
+            .foregroundColor(.white)
+            .background(backgroundManager.getBackgroundGradient(for: weather.description, timezone: weatherResponse.timezone))
+            .cornerRadius(20)
+            .frame(height: 120)
         }
-        .padding()
-        .foregroundColor(.white)
-        .background(Color.black)
-        .cornerRadius(20)
-        .frame(maxHeight: 150)
     }
 }
 
-#Preview {
-    SavedCityWeatherRow()
-}
+
