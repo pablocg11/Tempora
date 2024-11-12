@@ -27,9 +27,16 @@ struct WeatherInfoItem: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text(title)
                     .font(.caption)
-                Text("\(info) \(unit)")
-                    .font(.subheadline)
-                    .fontWeight(.bold)
+                if info != 0 {
+                    Text("\(info) \(unit)")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                }
+                else {
+                    Text("\(unit)")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                }
             }
             .padding(.horizontal,5)
         }

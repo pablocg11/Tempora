@@ -17,6 +17,8 @@ class PresentationErrorMapper {
             return "Failed to save data: \(error.localizedDescription). Please try again later."
         case .generic:
             return "Something went wrong. Try again later."
+        case .tooManyRequest:
+            return "Too many requests. Please try again later."
         }
     }
 }

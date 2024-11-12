@@ -4,8 +4,6 @@ import SwiftUI
 struct SavedCityWeatherRow: View {
     @State var cityName: String
     var weatherResponse: WeatherResponse
-    private let weatherIconManager = WeatherIconManager()
-    private let backgroundManager = WeatherBackgroundManager()
 
     var body: some View {
         if let weather = weatherResponse.weather.first {
@@ -42,7 +40,7 @@ struct SavedCityWeatherRow: View {
             }
             .padding()
             .foregroundColor(.white)
-            .background(backgroundManager.getBackgroundGradient(for: weather.description, timezone: weatherResponse.timezone))
+            .background(weather.getGradient(isDay: weatherResponse.checkIfDay()))
             .cornerRadius(20)
             .frame(height: 120)
         }

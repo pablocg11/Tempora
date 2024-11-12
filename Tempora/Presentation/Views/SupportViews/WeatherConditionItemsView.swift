@@ -1,13 +1,13 @@
 import SwiftUI
 
 struct WeatherConditionItemsView: View {
-    @State var selectedUnit: String
+    @Binding var selectedUnit: String
     @State var weatherResponse: WeatherResponse
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Weather conditions")
-                .font(.headline)
+                .font(.callout)
                 .fontWeight(.semibold)
             
             HStack {
@@ -15,9 +15,10 @@ struct WeatherConditionItemsView: View {
                     WeatherInfoItem(
                         title: "Min temp",
                         icon: "thermometer.low",
-                        info: temperature(for: weatherResponse.main.tempMin),
+                        info: selectedUnit == "F" ? Int(weatherResponse.main.tempMinInFahrenheit()) : Int(weatherResponse.main.tempMinInCelsius()),
                         unit: selectedUnit == "F" ? "ºF" : "ºC"
                     )
+                    .id("minTemp-\(selectedUnit)")
                     .transition(.opacity)
                     
                     WeatherInfoItem(
@@ -25,6 +26,13 @@ struct WeatherConditionItemsView: View {
                         icon: "wind",
                         info: Int(weatherResponse.wind.speed),
                         unit: "km/h"
+                    )
+                    
+                    WeatherInfoItem(
+                        title: "Wind direction",
+                        icon: "arrow.up.and.down.and.arrow.left.and.right",
+                        info: Int(),
+                        unit: weatherResponse.wind.windDirection()
                     )
                     
                     WeatherInfoItem(
@@ -53,9 +61,10 @@ struct WeatherConditionItemsView: View {
                     WeatherInfoItem(
                         title: "Max temp",
                         icon: "thermometer.high",
-                        info: temperature(for: weatherResponse.main.tempMax),
+                        info: selectedUnit == "F" ? Int(weatherResponse.main.tempMaxInFahrenheit()) : Int(weatherResponse.main.tempMaxInCelsius()),
                         unit: selectedUnit == "F" ? "ºF" : "ºC"
                     )
+                    .id("maxTemp-\(selectedUnit)")
                     .transition(.opacity)
 
                     WeatherInfoItem(
@@ -70,6 +79,13 @@ struct WeatherConditionItemsView: View {
                         icon: "eye.fill",
                         info: (weatherResponse.visibility / 1000),
                         unit: "km"
+                    )
+                    
+                    WeatherInfoItem(
+                        title: "Ground level",
+                        icon: "mountain.2.fill",
+                        info: weatherResponse.main.grndLevel,
+                        unit: "m"
                     )
                     
                     let sunset = weatherResponse.sys.sunset
@@ -90,11 +106,8 @@ struct WeatherConditionItemsView: View {
         .padding()
         .background(.white)
         .foregroundColor(Color.gray)
+        .animation(.easeInOut, value: selectedUnit)
         .cornerRadius(10)
-    }
-    
-    private func temperature(for value: Double) -> Int {
-        selectedUnit == "F" ? Int(value) : Int(value)
     }
     
     private func formattedDate(from timestamp: Int) -> String {

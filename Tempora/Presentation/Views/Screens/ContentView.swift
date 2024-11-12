@@ -4,11 +4,12 @@ import SwiftUI
 struct ContentView: View {
     
     private let weatherView: WeatherView
-    private let savedCityWeatherView: SavedCityWeatherView
+    private let savedCitiesView: SavedCitiesView
     
-    init(weatherView: WeatherView, savedCityWeatherView: SavedCityWeatherView) {
+    init(weatherView: WeatherView,
+         savedCitiesView: SavedCitiesView) {
         self.weatherView = weatherView
-        self.savedCityWeatherView = savedCityWeatherView
+        self.savedCitiesView = savedCitiesView
     }
     
     var body: some View {
@@ -17,7 +18,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
-            savedCityWeatherView
+            savedCitiesView
                 .tabItem {
                     Label("Saved", systemImage: "bookmark")
                 }

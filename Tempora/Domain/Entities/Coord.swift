@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct Coord {
+struct Coord: Hashable {
     let lon: Double
     let lat: Double
     

@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct Clouds {
+struct Clouds: Hashable {
     let all: Int
     
     init(all: Int) {

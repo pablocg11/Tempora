@@ -17,6 +17,7 @@ class WeatherViewModel: ObservableObject {
     @Published var showLoading: Bool = false
     @Published var errorMessage: String?
     @Published var selectedUnit: String = "C"
+    @Published var isCityFavorite: Bool = false
     
     func onAppear() {
         getLatAndLongFromLocation(location: "Madrid") { [weak self] result in
@@ -24,7 +25,10 @@ class WeatherViewModel: ObservableObject {
             
             switch result {
             case .success(let (lat, lon)):
-                self.requestCurrentWeatherFromLocation(forLat: lat, forLon: lon)
+                let city = CityCoordenates(name: "Madrid", lat: lat, lon: lon)
+                Task { @MainActor in
+                    self.requestCurrentWeatherFromLocation(forLat: lat, forLon: lon)
+                }
                 
             case .failure(let error):
                 self.handleError(error)

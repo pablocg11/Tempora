@@ -1,10 +1,9 @@
 import SwiftUI
 
-struct SavedCityWeatherView: View {
+struct SavedCitiesView: View {
+    @ObservedObject var viewModel: CityCoordenatesViewModel
     
-    @ObservedObject var viewModel: SavedCitiesViewModel
-    
-    init(viewModel: SavedCitiesViewModel) {
+    init(viewModel: CityCoordenatesViewModel) {
         self.viewModel = viewModel
     }
     
@@ -15,7 +14,7 @@ struct SavedCityWeatherView: View {
                ProgressView()
            }
            else{
-               if $viewModel.savedCitiesWeather.isEmpty {
+               if viewModel.cities.isEmpty {
                    VStack(alignment: .center, spacing: 20) {
                        Image(systemName: "list.bullet")
                            .resizable()
@@ -35,15 +34,15 @@ struct SavedCityWeatherView: View {
                            .fontWeight(.light)
                            .padding(.horizontal)
                        
+                       ForEach(viewModel.cities, id: \.self) { city in
+                           Text(city.name)
+                       }
+                       
 //                       ScrollView(showsIndicators: false) {
 //                           VStack {
-//                               ForEach(viewModel.savedCitiesWeather, id: \.id) { cityWeather in
-//                                   Button(action: {
-//                                       viewModel.deleteSavedCity(cityWeather.coordinates)
-//                                   }) {
-//                                       SavedCityWeatherRow(cityName: cityWeather.coordinates.name,
-//                                                           weatherResponse: cityWeather.weather)
-//                                   }
+//                               ForEach(viewModel.savedCitiesWeather, id: \.self) { cityWeather in
+//                                   SavedCityWeatherRow(cityName: cityWeather.city.name,
+//                                                       weatherResponse: cityWeather.weather)
 //                               }
 //                           }
 //                       }

@@ -1,6 +1,6 @@
 import Foundation
 
-struct WeatherResponse {
+struct WeatherResponse: Hashable, Equatable {
     let coord: Coord
     let weather: [Weather]
     let base: String
@@ -49,5 +49,17 @@ struct WeatherResponse {
         self.id = dto.id
         self.name = dto.name
         self.cod = dto.cod
+    }
+    
+    func checkIfDay() -> Bool {
+        let currentDate = Date()
+        let hour = Calendar.current.component(.hour, from: currentDate)
+        
+        let localHour = (hour + self.timezone / 3600) % 24
+        return localHour >= 7 && localHour < 19
+    }
+    
+    static func == (lhs: WeatherResponse, rhs: WeatherResponse) -> Bool {
+        return lhs.weather == rhs.weather
     }
 }

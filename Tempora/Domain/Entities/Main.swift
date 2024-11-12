@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct Main {
+struct Main: Hashable {
     let temp: Double
     let feelsLike: Double
     let tempMin: Double

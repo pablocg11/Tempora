@@ -6,5 +6,6 @@ enum DomainError: Error {
     case emptyResponse
     case locationNotFound
     case dataNotFound
+    case tooManyRequest
     case persistenceError(Error)
 }

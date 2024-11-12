@@ -3,33 +3,56 @@ import SwiftUI
 struct WeatherConditionView: View {
     let weatherResponse: WeatherResponse
     @Binding var selectedUnit: String
-    private let iconManager = WeatherIconManager()
+    @ObservedObject var cityCoordenatesViewModel: CityCoordenatesViewModel
+    @State private var isFavorite: Bool = false
+    
+    init(weatherResponse: WeatherResponse, selectedUnit: Binding<String>, cityCoordenatesViewModel: CityCoordenatesViewModel) {
+
+        self.weatherResponse = weatherResponse
+        self._selectedUnit = selectedUnit
+        self.cityCoordenatesViewModel = cityCoordenatesViewModel
+        
+        let city = CityCoordenates(name: weatherResponse.name, lat: weatherResponse.coord.lat, lon: weatherResponse.coord.lon)
+        self._isFavorite = State(initialValue: cityCoordenatesViewModel.isCityFavorite(city))
+    }
     
     var body: some View {
         if let weather = weatherResponse.weather.first {
-            VStack {
-                VStack(alignment: .leading) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
                     HStack {
                         VStack(alignment: .leading) {
                             Text(weatherResponse.name)
                                 .font(.title)
                                 .fontWeight(.bold)
- 
+                            
                             Text(formattedDate(from: weatherResponse.timezone))
                                 .font(.callout)
                         }
+                        
                         Spacer()
+                        
+                        Button(action: {
+                            toggleFavorite()
+                        }) {
+                            Image(systemName: isFavorite ? "star.fill" : "star")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: 30, maxHeight: 30)
+                                .foregroundColor(weatherResponse.checkIfDay() ? .white : .yellow)
+                                .padding(.horizontal)
+                        }
                     }
                     
                     Spacer()
                     
                     HStack {
                         VStack {
-                            Image(systemName: iconManager.getIcon(for: weather.description))
+                            Image(systemName: weather.getIcon(isDay: weatherResponse.checkIfDay()))
                                 .resizable()
                                 .scaledToFit()
-                                .frame(maxWidth: 150, minHeight: 150)
-                                .foregroundColor(Color(iconManager.getColor(for: weather.description)))
+                                .frame(maxWidth: 140, minHeight: 120)
+                                .foregroundColor(Color(weather.getIconColor(isDay: weatherResponse.checkIfDay())))
                             
                             Text(weather.description)
                                 .font(.callout)
@@ -38,27 +61,51 @@ struct WeatherConditionView: View {
                         
                         Spacer()
                         
-                        Text("\(temperature(for: weatherResponse.main.tempMax))º\(selectedUnit)")
-                            .font(.system(size: 60))
-                            .animation(.easeInOut, value: selectedUnit)
-
+                        ZStack {
+                            if selectedUnit == "C" {
+                                Text("\(Int(weatherResponse.main.tempInCelsius()))º\(selectedUnit)")
+                                    .font(.system(size: 60))
+                                    .transition(.opacity)
+                            } else {
+                                Text("\(Int(weatherResponse.main.tempInFahrenheit()))º\(selectedUnit)")
+                                    .font(.system(size: 60))
+                                    .transition(.opacity)
+                            }
+                        }
+                        .animation(.easeInOut, value: selectedUnit)
                     }
-                    .padding()
+                    .padding([.horizontal, .bottom])
+      
                     
-                    Spacer()
+                    WeatherConditionItemsView(selectedUnit: $selectedUnit,
+                                              weatherResponse: weatherResponse)
+                    
+                    
+                    
+//                    MapView(cityCoordenates: CityCoordenates(name: weatherResponse.name,
+//                                                            lat: weatherResponse.coord.lat,
+//                                                             lon: weatherResponse.coord.lat))
+                    
                 }
-                .padding()
-                
-                WeatherConditionItemsView(selectedUnit: selectedUnit,
-                                          weatherResponse: weatherResponse)
+                .padding([.horizontal, .bottom])
             }
             .foregroundColor(.white)
-            .background(Color.clear.opacity(0.7))
+            .scrollIndicators(.hidden)
         }
     }
     
-    private func temperature(for value: Double) -> Int {
-        selectedUnit == "F" ? Int(value) : Int(value)
+    private func toggleFavorite(){
+        let city = CityCoordenates(name: weatherResponse.name, lat: weatherResponse.coord.lat, lon: weatherResponse.coord.lon)
+        
+        Task {
+            if isFavorite {
+//                await cityCoordenatesViewModel.removeCityFromFavorites(city)
+                print("Hola")
+            } else {
+                await cityCoordenatesViewModel.saveCityCoordenates(city)
+            }
+            isFavorite.toggle()
+        }
     }
     
     private func formattedDate(from timestamp: Int) -> String {

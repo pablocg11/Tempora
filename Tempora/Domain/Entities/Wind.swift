@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct Wind {
+struct Wind: Hashable {
     let speed: Double
     let deg: Int
     let gust: Double?

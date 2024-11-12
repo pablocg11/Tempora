@@ -3,52 +3,31 @@ import Foundation
 
 class SavedCitiesViewFactory {
     
-    func createView() -> SavedCityWeatherView {
-        return SavedCityWeatherView(viewModel: createViewModel())
+    func createView() -> SavedCitiesView {
+        return SavedCitiesView(viewModel: createViewModel())
     }
     
-    private func createViewModel() -> SavedCitiesViewModel {
-        return SavedCitiesViewModel(errorMapper: createErrorMapper(),
-                                    getSavedCitiesUseCase: createGetSavedCitiesUseCase(),
-                                    deleteSavedCitiesUseCase: createDeleteSavedCitiesUseCase(),
-                                    getWeatherUseCase: createGetCurrentWeatherUseCase())
+    private func createViewModel() -> CityCoordenatesViewModel {
+        return CityCoordenatesViewModel(errorMapper: PresentationErrorMapper(),
+                                        getCityCoordenatesListUseCase: createGetCityCoordinatesListUseCase(),
+                                        saveCityCoordenatesUseCase: createSaveCityCoordenatesUseCase())
     }
     
-    private func createErrorMapper() -> PresentationErrorMapper {
-        return PresentationErrorMapper()
+    private func createGetCityCoordinatesListUseCase() -> GetCityCoordinatesListUseCase {
+        return GetCityCoordinatesListUseCase(repository: createCityCoordinatesRepository())
     }
     
-    private func createGetSavedCitiesUseCase() -> GetSavedCitiesUseCaseImpl {
-        GetSavedCitiesUseCaseImpl(repository: createSavedCitiesRepository())
+    private func createSaveCityCoordenatesUseCase() -> SaveCityCoordenatesUseCase {
+        return SaveCityCoordenatesUseCase(repository: createCityCoordinatesRepository())
     }
     
-    private func createDeleteSavedCitiesUseCase() -> DeleteSavedCitiesUseCaseImpl {
-        DeleteSavedCitiesUseCaseImpl(repository: createSavedCitiesRepository())
+    private func createCityCoordinatesRepository() -> CityCoordenatesRepository {
+        return CityCoordenatesRepository(cacheDataSource: createCacheDataSource(),
+                                         errorMapper: DomainErrorMapper())
     }
     
-    private func createGetCurrentWeatherUseCase() -> GetCurrentWeatherByLocationUseCaseImpl {
-        return GetCurrentWeatherByLocationUseCaseImpl(repository: createGetCurrentWeatherRepository())
+    private func createCacheDataSource() -> CacheCityCoordenatesDataSourceProtocol {
+        return CityCoordenatesCacheStrategy(temporalCache: CacheCityCoordenatesDataSource.shared(),
+                                            persistanceCache: SwiftDataCacheDataSource(container: SwiftDataContainer.shared()))
     }
-    
-    private func createSavedCitiesRepository() -> SavedCitiesRepository {
-        return SavedCitiesRepository(cacheDataSource: createSavedCityCacheDataSource())
-    }
-    
-    private func createGetCurrentWeatherRepository() -> CurrentWeatherRepository {
-        return CurrentWeatherRepository(apiDataSource: createGetCurrentWeatherRepositoryApiDataSource())
-    }
-    
-    private func createGetCurrentWeatherRepositoryApiDataSource() -> APICurrentWeatherDataSourceProtocol {
-        return RestAPIDataSource(httpClient: createHTTPClient())
-    }
-    
-    private func createHTTPClient() -> HTTPClient {
-        return HTTPClient(requestBuilder: HTTPRequestBuilder(),
-                          errorsResolver: HTTPErrorsResolver())
-    }
-    
-    private func createSavedCityCacheDataSource() -> PersistenceContainerProtocol {
-        return PersistenceContainer.shared()
-    }
-    
 }

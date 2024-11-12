@@ -2,11 +2,13 @@ import SwiftUI
 
 struct WeatherView: View {
     @State private var location: String = ""
-    @ObservedObject var vm: WeatherViewModel
-    private let backgroundManager = WeatherBackgroundManager()
+    @ObservedObject var weatherViewModel: WeatherViewModel
+    @ObservedObject var cityCoordenatesViewModel: CityCoordenatesViewModel
     
-    init(vm: WeatherViewModel) {
-        self.vm = vm
+    init(weatherViewModel: WeatherViewModel,
+         cityCoordenatesViewModel: CityCoordenatesViewModel) {
+        self.weatherViewModel = weatherViewModel
+        self.cityCoordenatesViewModel = cityCoordenatesViewModel
     }
     
     var body: some View {
@@ -18,14 +20,13 @@ struct WeatherView: View {
                     
                     Button("Search") {
                         if !location.isEmpty {
-                                vm.getLatAndLongFromLocation(location: location) { result in
+                            weatherViewModel.getLatAndLongFromLocation(location: location) { result in
                                     switch result {
                                     case .success(let coordinates):
                                         let lat = coordinates.0
                                         let lon = coordinates.1
 
-                                        vm.requestCurrentWeatherFromLocation(forLat: lat, forLon: lon)
-                                        
+                                        weatherViewModel.requestCurrentWeatherFromLocation(forLat: lat, forLon: lon)
                                     case .failure(let error):
                                         print("Error obteniendo coordenadas: \(error)")
                                     }
@@ -39,19 +40,19 @@ struct WeatherView: View {
                 
                 Spacer()
                 
-                if vm.showLoading {
+                if weatherViewModel.showLoading {
                     ProgressView("Loading...")
                         .progressViewStyle(CircularProgressViewStyle(tint: .gray))
                         .scaleEffect(1.5)
-                } else if let errorMessage = vm.errorMessage {
+                } else if let errorMessage = weatherViewModel.errorMessage {
                     ErrorView(errorMessage: errorMessage)
-                } else if let weather = vm.weather {
+                } else if let weather = weatherViewModel.weather {
                     if (weather.weather.first?.description) != nil {
                         VStack {
-                            TemperatureUnitToggle(selectedUnit: $vm.selectedUnit)
+                            TemperatureUnitToggle(selectedUnit: $weatherViewModel.selectedUnit)
                             WeatherConditionView(weatherResponse: weather,
-                                             selectedUnit: $vm.selectedUnit)
-                            .ignoresSafeArea(edges: .bottom)
+                                                 selectedUnit: $weatherViewModel.selectedUnit,
+                                                 cityCoordenatesViewModel: cityCoordenatesViewModel)
                         }
                     }
                 }
@@ -59,18 +60,17 @@ struct WeatherView: View {
                 Spacer()
             }
             .onAppear {
-                vm.onAppear()
+                weatherViewModel.onAppear()
             }
             .background(
                 Group {
-                    if let weather = vm.weather,
-                       let weatherDescription = weather.weather.first?.description {
-                        backgroundManager.getBackgroundGradient(for: weatherDescription, timezone: weather.timezone)
+                    if let weatherResponse = weatherViewModel.weather, let weather = weatherResponse.weather.first {
+                        weather.getGradient(isDay: weatherResponse.checkIfDay())
                     } else {
                         Color.clear
                     }
                 }
-                .ignoresSafeArea(edges: .top)
+                    .ignoresSafeArea(edges: .top)
             )
         }
     }
