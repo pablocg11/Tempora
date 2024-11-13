@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		D6966D772CE52AD700379A6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D67B3F662CCAEDD0003353A1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D67B3F6D2CCAEDD0003353A1;
+			remoteInfo = Tempora;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		D67B3F6E2CCAEDD0003353A1 /* Tempora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tempora.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6966D732CE52AD700379A6A /* TemporaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemporaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +40,22 @@
 			path = Tempora;
 			sourceTree = "<group>";
 		};
+		D6966D742CE52AD700379A6A /* TemporaTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TemporaTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		D67B3F6B2CCAEDD0003353A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6966D702CE52AD700379A6A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				D67B3F702CCAEDD0003353A1 /* Tempora */,
+				D6966D742CE52AD700379A6A /* TemporaTests */,
 				D67B3F6F2CCAEDD0003353A1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				D67B3F6E2CCAEDD0003353A1 /* Tempora.app */,
+				D6966D732CE52AD700379A6A /* TemporaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +108,29 @@
 			productReference = D67B3F6E2CCAEDD0003353A1 /* Tempora.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D6966D722CE52AD700379A6A /* TemporaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6966D7B2CE52AD700379A6A /* Build configuration list for PBXNativeTarget "TemporaTests" */;
+			buildPhases = (
+				D6966D6F2CE52AD700379A6A /* Sources */,
+				D6966D702CE52AD700379A6A /* Frameworks */,
+				D6966D712CE52AD700379A6A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D6966D782CE52AD700379A6A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D6966D742CE52AD700379A6A /* TemporaTests */,
+			);
+			name = TemporaTests;
+			packageProductDependencies = (
+			);
+			productName = TemporaTests;
+			productReference = D6966D732CE52AD700379A6A /* TemporaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -95,6 +143,10 @@
 				TargetAttributes = {
 					D67B3F6D2CCAEDD0003353A1 = {
 						CreatedOnToolsVersion = 16.0;
+					};
+					D6966D722CE52AD700379A6A = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = D67B3F6D2CCAEDD0003353A1;
 					};
 				};
 			};
@@ -113,12 +165,20 @@
 			projectRoot = "";
 			targets = (
 				D67B3F6D2CCAEDD0003353A1 /* Tempora */,
+				D6966D722CE52AD700379A6A /* TemporaTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D67B3F6C2CCAEDD0003353A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6966D712CE52AD700379A6A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +195,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D6966D6F2CE52AD700379A6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D6966D782CE52AD700379A6A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D67B3F6D2CCAEDD0003353A1 /* Tempora */;
+			targetProxy = D6966D772CE52AD700379A6A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D67B3F7B2CCAEDD1003353A1 /* Debug */ = {
@@ -271,12 +346,17 @@
 				INFOPLIST_FILE = Tempora/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "To provide weather updates based on your current location, we need permission to access your location. This allows us to deliver accurate, real-time weather information based on where you are.\n";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "To provide weather updates based on your current location, we need permission to access your location. This allows us to deliver accurate, real-time weather information based on where you are.\n";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide weather updates based on your current location, we need permission to access your location. This allows us to deliver accurate, real-time weather information based on where you are.\n";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -314,12 +394,17 @@
 				INFOPLIST_FILE = Tempora/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "To provide weather updates based on your current location, we need permission to access your location. This allows us to deliver accurate, real-time weather information based on where you are.\n";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "To provide weather updates based on your current location, we need permission to access your location. This allows us to deliver accurate, real-time weather information based on where you are.\n";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide weather updates based on your current location, we need permission to access your location. This allows us to deliver accurate, real-time weather information based on where you are.\n";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -340,6 +425,47 @@
 			};
 			name = Release;
 		};
+		D6966D792CE52AD700379A6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y8HB8QQ3X5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pablocastro.apps.TemporaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tempora.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tempora";
+			};
+			name = Debug;
+		};
+		D6966D7A2CE52AD700379A6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y8HB8QQ3X5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pablocastro.apps.TemporaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tempora.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tempora";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -357,6 +483,15 @@
 			buildConfigurations = (
 				D67B3F7E2CCAEDD1003353A1 /* Debug */,
 				D67B3F7F2CCAEDD1003353A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D6966D7B2CE52AD700379A6A /* Build configuration list for PBXNativeTarget "TemporaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6966D792CE52AD700379A6A /* Debug */,
+				D6966D7A2CE52AD700379A6A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

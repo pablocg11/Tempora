@@ -2,7 +2,6 @@
 import SwiftUI
 
 struct TemperatureUnitToggle: View {
-    
     let units = ["C", "F"]
     @Binding var selectedUnit: String
     

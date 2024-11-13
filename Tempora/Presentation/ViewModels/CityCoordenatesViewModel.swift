@@ -36,7 +36,7 @@ class CityCoordenatesViewModel: ObservableObject {
         }        
     }
     
-    func saveCityCoordenates(_ cityCoordenates: CityCoordenates) {
+    func saveCityCoordenates(_ cityCoordenates: CityCoordenates) async {
         Task {
             let result = await saveCityCoordenatesUseCase.execute(city: cityCoordenates)
             await MainActor.run {

@@ -2,7 +2,6 @@
 import Foundation
 
 class CustomHourFormatter {
-    
     static let shared = CustomHourFormatter()
     
     private let dateFormatter: DateFormatter

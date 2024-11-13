@@ -21,18 +21,17 @@ struct WeatherView: View {
                     Button("Search") {
                         if !location.isEmpty {
                             weatherViewModel.getLatAndLongFromLocation(location: location) { result in
-                                    switch result {
-                                    case .success(let coordinates):
-                                        let lat = coordinates.0
-                                        let lon = coordinates.1
-
-                                        weatherViewModel.requestCurrentWeatherFromLocation(forLat: lat, forLon: lon)
-                                    case .failure(let error):
-                                        print("Error obteniendo coordenadas: \(error)")
-                                    }
+                                switch result {
+                                case .success(let coordinates):
+                                    let lat = coordinates.0
+                                    let lon = coordinates.1
+                                    weatherViewModel.requestCurrentWeatherFromLocation(forLat: lat, forLon: lon)
+                                case .failure(let error):
+                                    print("Error obteniendo coordenadas: \(error)")
                                 }
-                                location = ""
                             }
+                            location = "" 
+                        }
                     }
                     .disabled(location.isEmpty)
                 }
@@ -50,9 +49,28 @@ struct WeatherView: View {
                     if (weather.weather.first?.description) != nil {
                         VStack {
                             TemperatureUnitToggle(selectedUnit: $weatherViewModel.selectedUnit)
-                            WeatherConditionView(weatherResponse: weather,
-                                                 selectedUnit: $weatherViewModel.selectedUnit,
-                                                 cityCoordenatesViewModel: cityCoordenatesViewModel)
+                            ScrollView {
+                                WeatherConditionView(weatherResponse: weather,
+                                                     selectedUnit: $weatherViewModel.selectedUnit,
+                                                     cityCoordenatesViewModel: cityCoordenatesViewModel)
+                                .padding(.bottom)
+                                ZStack(alignment: .topLeading) {
+                                    MapView(cityCoordenates: CityCoordenates(name: weather.name,
+                                                                             lat: weather.coord.lat,
+                                                                             lon: weather.coord.lon))
+                                    
+                                    Text("Location map")
+                                        .font(.callout)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(Color.gray)
+                                        .padding(7)
+                                        .background(Color.white.opacity(0.7))
+                                        .cornerRadius(5)
+                                        .padding()
+                                }
+                            }
+                            .padding()
+                            .scrollIndicators(.hidden)
                         }
                     }
                 }
@@ -70,7 +88,7 @@ struct WeatherView: View {
                         Color.clear
                     }
                 }
-                    .ignoresSafeArea(edges: .top)
+                .ignoresSafeArea(edges: .top)
             )
         }
     }

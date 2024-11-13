@@ -16,7 +16,8 @@ class WeatherViewFactory {
     
     private func createWeatherViewModel() -> WeatherViewModel {
         return WeatherViewModel(errorMapper: PresentationErrorMapper(),
-                                getcurrentWeatherUseCase: createGetCurrentWeatherUseCase())
+                                getcurrentWeatherUseCase: createGetCurrentWeatherUseCase(),
+                                locationManager: LocationManager())
     }
     
     private func createGetCityCoordinatesListUseCase() -> GetCityCoordinatesListUseCase {

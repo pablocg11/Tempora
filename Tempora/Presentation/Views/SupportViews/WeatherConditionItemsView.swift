@@ -41,18 +41,6 @@ struct WeatherConditionItemsView: View {
                         info: Int(weatherResponse.main.pressure),
                         unit: "hPa"
                     )
-                    
-                    let sunrise = weatherResponse.sys.sunrise
-                    let sunriseDate = Date(timeIntervalSince1970: TimeInterval(sunrise))
-                    let calendar = Calendar.current
-                    let hour = calendar.component(.hour, from: sunriseDate)
-
-                    WeatherInfoItem(
-                        title: "Sunrise",
-                        icon: "sunrise.fill",
-                        info: hour,
-                        unit: "h"
-                    )
                 }
                 
                 Spacer()
@@ -66,7 +54,7 @@ struct WeatherConditionItemsView: View {
                     )
                     .id("maxTemp-\(selectedUnit)")
                     .transition(.opacity)
-
+                    
                     WeatherInfoItem(
                         title: "Humidity",
                         icon: "humidity.fill",
@@ -87,19 +75,6 @@ struct WeatherConditionItemsView: View {
                         info: weatherResponse.main.grndLevel,
                         unit: "m"
                     )
-                    
-                    let sunset = weatherResponse.sys.sunset
-                    let sunsetDate = Date(timeIntervalSince1970: TimeInterval(sunset))
-                    let calendar = Calendar.current
-                    let hour = calendar.component(.hour, from: sunsetDate)
-
-                    WeatherInfoItem(
-                        title: "Sunset",
-                        icon: "sunset.fill",
-                        info: hour,
-                        unit: "h"
-                    )
-
                 }
             }
         }

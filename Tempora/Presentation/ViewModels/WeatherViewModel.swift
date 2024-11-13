@@ -1,16 +1,20 @@
 
 import Foundation
 import CoreLocation
+import Combine
 
 class WeatherViewModel: ObservableObject {
     
     private let errorMapper: PresentationErrorMapper
     private let getcurrentWeatherUseCase: GetCurrentWeatherByLocationUseCaseImpl
+    private let locationManager: LocationManager
     
     init(errorMapper: PresentationErrorMapper,
-         getcurrentWeatherUseCase: GetCurrentWeatherByLocationUseCaseImpl) {
+         getcurrentWeatherUseCase: GetCurrentWeatherByLocationUseCaseImpl,
+         locationManager: LocationManager) {
         self.errorMapper = errorMapper
         self.getcurrentWeatherUseCase = getcurrentWeatherUseCase
+        self.locationManager = locationManager
     }
     
     @Published var weather: WeatherResponse?
@@ -18,47 +22,30 @@ class WeatherViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var selectedUnit: String = "C"
     @Published var isCityFavorite: Bool = false
+    @Published var isLocationReady: Bool = false
+    private var cancellables: Set<AnyCancellable> = []
     
     func onAppear() {
-        getLatAndLongFromLocation(location: "Madrid") { [weak self] result in
+        showLoading = true
+        locationManager.$authorizationStatus.sink { [weak self] status in
             guard let self = self else { return }
             
-            switch result {
-            case .success(let (lat, lon)):
-                let city = CityCoordenates(name: "Madrid", lat: lat, lon: lon)
-                Task { @MainActor in
+            if status == .authorizedWhenInUse || status == .authorizedAlways {
+                if let location = self.locationManager.locationManager.location {
+                    let lat = location.coordinate.latitude
+                    let lon = location.coordinate.longitude
                     self.requestCurrentWeatherFromLocation(forLat: lat, forLon: lon)
                 }
-                
-            case .failure(let error):
-                self.handleError(error)
+            } else {
+                self.handleError(DomainError.locationNotFound)
             }
+            showLoading = false
         }
+        .store(in: &cancellables)
+        
+        locationManager.locationManager.requestLocation()
     }
     
-    func getLatAndLongFromLocation(location: String, completion: @escaping (Result<(Double, Double), DomainError>) -> Void) {
-        let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(location) { placemarks, error in
-            if let error = error as? CLError, error.code == .locationUnknown {
-                completion(.failure(.locationNotFound))
-                return
-            } else if error != nil {
-                completion(.failure(.generic)) 
-                return
-            }
-            
-            guard let location = placemarks?.first?.location else {
-                completion(.failure(.emptyResponse))  
-                return
-            }
-            
-            let lat = location.coordinate.latitude
-            let lon = location.coordinate.longitude
-            
-            completion(.success((lat, lon)))
-        }
-    }
-
     func requestCurrentWeatherFromLocation(forLat lat: Double, forLon lon: Double) {
         showLoading = true
         
@@ -71,10 +58,33 @@ class WeatherViewModel: ObservableObject {
                     self.errorMessage = nil
                     self.weather = weather
                 }
-                
             case .failure(let error):
                 handleError(error)
             }
+        }
+    }
+    
+    func getLatAndLongFromLocation(location: String, completion: @escaping (Result<(Double, Double), DomainError>) -> Void) {
+        let geocoder = CLGeocoder()
+        
+        geocoder.geocodeAddressString(location) { placemarks, error in
+            if let error = error as? CLError, error.code == .locationUnknown {
+                completion(.failure(.locationNotFound))
+                return
+            } else if error != nil {
+                completion(.failure(.generic))
+                return
+            }
+            
+            guard let placemark = placemarks?.first, let location = placemark.location else {
+                completion(.failure(.emptyResponse))
+                return
+            }
+            
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            
+            completion(.success((lat, lon)))
         }
     }
     
