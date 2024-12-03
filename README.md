@@ -1,5 +1,7 @@
 
-![temporaAppIcon](https://github.com/user-attachments/assets/424c1e1f-9752-4062-a08e-e6ed937d4b01)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/424c1e1f-9752-4062-a08e-e6ed937d4b01" width="200"/>
+</p>
 
 # Tempora 🌍☀️
 
